@@ -21,6 +21,7 @@ public class TreinamentoModel {
     @Column(name = "treino")
     private String nome;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "dificuldade")
     private Dificuldade dificuldade;
 
