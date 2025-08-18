@@ -1,34 +1,45 @@
 package dev.java10x.CadastroDeCaesAR.Treinamentos.Controller;
 
+import dev.java10x.CadastroDeCaesAR.Treinamentos.Service.TreinamentoModel;
+import dev.java10x.CadastroDeCaesAR.Treinamentos.Service.TreinamentoService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/missoes")
+@RequestMapping("/treinos")
 public class TreinamentoController {
+
+    private TreinamentoService treinamentoService;
+
+    public TreinamentoController(TreinamentoService treinamentoService) {
+        this.treinamentoService = treinamentoService;
+    }
+
     //CRUD
 
     @PostMapping("/criar")
-    public String criarTreino(){
-        return "Treino criado com sucesso";
+    public TreinamentoModel criarTreino(@RequestBody TreinamentoModel treinamentoModel){
+        return treinamentoService.criarTreino(treinamentoModel);
     }
 
     @GetMapping("/mostrarTodosOsTreinos")
-    public String mostrarTreinos(){
-        return "todos os treinos:";
+    public List<TreinamentoModel> mostrarTreinos(){
+        return treinamentoService.mostrarTreinos();
     }
 
-    @GetMapping
-    public String mostrarPorID(){
-        return "treino por id:";
+    @GetMapping("/mostrarTodosOsTreinos/{id}")
+    public TreinamentoModel mostrarPorID(@PathVariable Long id){
+        return treinamentoService.mostrarPorID(id);
     }
 
-    @PutMapping("/alterar")
-    public String alterarDados(){
-        return "Dados alterados";
+    @PutMapping("/alterar/{id}")
+    public TreinamentoModel alterarDados(@PathVariable Long id, @RequestBody TreinamentoModel treinamentoAtualizado){
+        return treinamentoService.alterarDados(id,treinamentoAtualizado);
     }
 
-    @DeleteMapping
-    public String deletarTreino(){
-        return "Treino deletado";
+    @DeleteMapping("/deletar/{id}")
+    public void deletarTreino(@PathVariable Long id){
+        treinamentoService.deletarTreino(id);
     }
 }
