@@ -21,7 +21,7 @@ public class DogModel {
     @Column(name = "nome")
     private String nome;
 
-    @Column(name = "DogNome")
+    @Column(name = "dog_nome")
     private String dogNome;
 
     @Column(unique = true)
@@ -36,7 +36,7 @@ public class DogModel {
     @Column(name = "idade")
     private int idade;
 
-    @Column(name = "taxiDog")
+    @Column(name = "taxi_dog")
     private boolean taxiDog;
 
     @ManyToOne

@@ -3,7 +3,7 @@ package dev.java10x.CadastroDeCaesAR.Treinamentos.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("missoes")
+@RequestMapping("/missoes")
 public class TreinamentoController {
     //CRUD
 

@@ -1,5 +1,6 @@
 package dev.java10x.CadastroDeCaesAR.Treinamentos.Service;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import dev.java10x.CadastroDeCaesAR.Caes.Service.DogModel;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,6 +30,7 @@ public class TreinamentoModel {
     private String dicas;
 
     @OneToMany(mappedBy = "treinamentos")
+    //@JsonIgnore
     private List<DogModel> dog;
 
 
