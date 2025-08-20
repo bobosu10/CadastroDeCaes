@@ -1,5 +1,6 @@
 package dev.java10x.CadastroDeCaesAR.Caes.Controller;
 
+import dev.java10x.CadastroDeCaesAR.Caes.Service.DogDTO;
 import dev.java10x.CadastroDeCaesAR.Caes.Service.DogModel;
 import dev.java10x.CadastroDeCaesAR.Caes.Service.DogService;
 import org.springframework.web.bind.annotation.*;
@@ -24,27 +25,27 @@ public class DogController {
 
     //adicionar(CREATE)
     @PostMapping("/criar")
-    public DogModel criar(@RequestBody DogModel dogModel){
-        return dogService.criar(dogModel);
+    public DogDTO criar(@RequestBody DogDTO dog){
+        return dogService.criar(dog);
     }
 
     //procurar(CREATE)
 
     //mostrar todos(READ)
     @GetMapping("/listar")
-    public List<DogModel> listarTodos(){
+    public List<DogDTO> listarTodos(){
         return dogService.listarTodos();
     }
 
     //mostrar por id(READ)
     @GetMapping("/listar/{id}")
-    public DogModel mostrarPorID(@PathVariable Long id){
+    public DogDTO mostrarPorID(@PathVariable Long id){
         return dogService.mostrarPorID(id);
     }
 
     //alterar dados(UPDATE)
     @PutMapping("/alterar/{id}")
-    public DogModel alterarDados(@PathVariable Long id,@RequestBody  DogModel dogAtualizado){
+    public DogDTO alterarDados(@PathVariable Long id,@RequestBody  DogDTO dogAtualizado){
         return dogService.alterarDados(id,dogAtualizado);
     }
 

@@ -7,38 +7,53 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TreinamentoService {
 
     @Autowired
     private TreinamentoRepository treinamentoRepository;
+    private TreinamentoMapper treinamentoMapper;
+
+    public TreinamentoService(TreinamentoMapper treinamentoMapper, TreinamentoRepository treinamentoRepository) {
+        this.treinamentoMapper = treinamentoMapper;
+        this.treinamentoRepository = treinamentoRepository;
+    }
 
     //criar
 
-    public TreinamentoModel criarTreino(TreinamentoModel treinamentoModel){
-        return treinamentoRepository.save(treinamentoModel);
+    public TreinamentoDTO criarTreino(TreinamentoDTO treinamentoDTO){
+        TreinamentoModel treino = treinamentoMapper.map(treinamentoDTO);
+        treino = treinamentoRepository.save(treino);
+        return treinamentoMapper.map(treino);
     }
 
     //listar
 
-    public List<TreinamentoModel> mostrarTreinos(){
-        return treinamentoRepository.findAll();
+    public List<TreinamentoDTO> mostrarTreinos(){
+        List<TreinamentoModel> treinos = treinamentoRepository.findAll();
+        return treinos.stream()
+                .map(treinamentoMapper::map)
+                .collect(Collectors.toList());
     }
 
     //lisarPorID
 
-    public TreinamentoModel mostrarPorID(Long id){
+    public TreinamentoDTO mostrarPorID(Long id){
         Optional<TreinamentoModel> treinoPorID = treinamentoRepository.findById(id);
-        return treinoPorID.orElse(null);
+        return treinoPorID.map(treinamentoMapper::map).orElse(null);
     }
 
     //alterar
 
-    public TreinamentoModel alterarDados(Long id, TreinamentoModel treinoAtualizado){
-        if (treinamentoRepository.existsById(id)){
+    public TreinamentoDTO alterarDados(Long id, TreinamentoDTO treinamentoDTO){
+        Optional<TreinamentoModel> treinoExiste = treinamentoRepository.findById(id);
+        if (treinoExiste.isPresent()){
+            TreinamentoModel treinoAtualizado = treinamentoMapper.map(treinamentoDTO);
             treinoAtualizado.setId(id);
-            return treinamentoRepository.save(treinoAtualizado);
+            TreinamentoModel treinoSalvo = treinamentoRepository.save(treinoAtualizado);
+            return treinamentoMapper.map(treinoSalvo);
         }
         return null;
     }

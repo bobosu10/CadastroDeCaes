@@ -6,30 +6,42 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class DogService {
 
     @Autowired
     private DogRepository dogRepository;
+    private DogMapper dogMapper;
+
+    public DogService(DogMapper dogMapper, DogRepository dogRepository) {
+        this.dogMapper = dogMapper;
+        this.dogRepository = dogRepository;
+    }
 
     //criar
 
-    public DogModel criar(DogModel dogModel){
-        return dogRepository.save(dogModel);
+    public DogDTO criar(DogDTO dogDTO){
+        DogModel dog = dogMapper.map(dogDTO);
+        dog = dogRepository.save(dog);
+        return dogMapper.map(dog);
     }
 
     //listar
 
-    public List<DogModel> listarTodos(){
-        return dogRepository.findAll();
+    public List<DogDTO> listarTodos(){
+        List<DogModel> dogs = dogRepository.findAll();
+        return dogs.stream()
+                .map(dogMapper::map)
+                .collect(Collectors.toList());
     }
 
     //listar por id
 
-    public DogModel mostrarPorID(Long id){
+    public DogDTO mostrarPorID(Long id){
         Optional<DogModel> dogPorID = dogRepository.findById(id);
-        return dogPorID.orElse(null);
+        return dogPorID.map(dogMapper::map).orElse(null);
     }
 
     //deletar
@@ -45,10 +57,13 @@ public class DogService {
     }
 
     //alterar
-    public DogModel alterarDados(Long id,DogModel dogAtualizado){
-        if(dogRepository.existsById(id)){
+    public DogDTO alterarDados(Long id,DogDTO dogDTO){
+        Optional<DogModel> dogExistente = dogRepository.findById(id);
+        if(dogExistente.isPresent()){
+            DogModel dogAtualizado = dogMapper.map(dogDTO);
             dogAtualizado.setId(id);
-            return dogRepository.save(dogAtualizado);
+            DogModel dogSalvo = dogRepository.save(dogAtualizado);
+            return dogMapper.map(dogSalvo);
         }
         return null;
     }

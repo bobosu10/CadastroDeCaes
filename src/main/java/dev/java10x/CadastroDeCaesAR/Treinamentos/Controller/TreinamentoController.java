@@ -1,5 +1,6 @@
 package dev.java10x.CadastroDeCaesAR.Treinamentos.Controller;
 
+import dev.java10x.CadastroDeCaesAR.Treinamentos.Service.TreinamentoDTO;
 import dev.java10x.CadastroDeCaesAR.Treinamentos.Service.TreinamentoModel;
 import dev.java10x.CadastroDeCaesAR.Treinamentos.Service.TreinamentoService;
 import org.springframework.web.bind.annotation.*;
@@ -19,22 +20,22 @@ public class TreinamentoController {
     //CRUD
 
     @PostMapping("/criar")
-    public TreinamentoModel criarTreino(@RequestBody TreinamentoModel treinamentoModel){
-        return treinamentoService.criarTreino(treinamentoModel);
+    public TreinamentoDTO criarTreino(@RequestBody TreinamentoDTO treinamentoDTO){
+        return treinamentoService.criarTreino(treinamentoDTO);
     }
 
     @GetMapping("/mostrarTodosOsTreinos")
-    public List<TreinamentoModel> mostrarTreinos(){
+    public List<TreinamentoDTO> mostrarTreinos(){
         return treinamentoService.mostrarTreinos();
     }
 
     @GetMapping("/mostrarTodosOsTreinos/{id}")
-    public TreinamentoModel mostrarPorID(@PathVariable Long id){
+    public TreinamentoDTO mostrarPorID(@PathVariable Long id){
         return treinamentoService.mostrarPorID(id);
     }
 
     @PutMapping("/alterar/{id}")
-    public TreinamentoModel alterarDados(@PathVariable Long id, @RequestBody TreinamentoModel treinamentoAtualizado){
+    public TreinamentoDTO alterarDados(@PathVariable Long id, @RequestBody TreinamentoDTO treinamentoAtualizado){
         return treinamentoService.alterarDados(id,treinamentoAtualizado);
     }
 
