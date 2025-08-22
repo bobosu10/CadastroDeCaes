@@ -16,7 +16,7 @@ public class TreinamentoModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID")
+    @Column(name = "id")
     private long id;
 
     @Column(name = "treino")
@@ -30,7 +30,7 @@ public class TreinamentoModel {
     private String dicas;
 
     @OneToMany(mappedBy = "treinamentos")
-    //@JsonIgnore
+    @JsonIgnore
     private List<DogModel> dog;
 
 
