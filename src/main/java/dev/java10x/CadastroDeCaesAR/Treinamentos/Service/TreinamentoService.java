@@ -66,4 +66,14 @@ public class TreinamentoService {
             treinamentoRepository.deleteById(id);
         }
     }
+
+    //concluir treino
+
+    public TreinamentoDTO alterarTreino(Long id,TreinamentoDTO treinamentoDTO){
+        TreinamentoModel treinamentoModel = treinamentoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Treino nao encontrado"));
+
+        treinamentoModel.setConcluido(treinamentoDTO.isConcluido());
+        return treinamentoMapper.map(treinamentoRepository.save(treinamentoModel));
+    }
 }

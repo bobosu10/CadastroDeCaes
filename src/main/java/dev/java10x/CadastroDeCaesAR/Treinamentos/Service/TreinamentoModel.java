@@ -29,6 +29,9 @@ public class TreinamentoModel {
     @Column(name = "dicas")
     private String dicas;
 
+    @Column(name = "concluido")
+    private boolean concluido;
+
     @OneToMany(mappedBy = "treinamentos")
     @JsonIgnore
     private List<DogModel> dog;

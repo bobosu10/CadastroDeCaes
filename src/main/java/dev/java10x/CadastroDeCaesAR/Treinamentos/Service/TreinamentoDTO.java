@@ -22,4 +22,6 @@ public class TreinamentoDTO {
 
     private List<DogModel> dog;
 
+    private boolean concluido;
+
 }

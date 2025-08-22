@@ -1,10 +1,12 @@
 package dev.java10x.CadastroDeCaesAR.Caes.Controller;
 
+import dev.java10x.CadastroDeCaesAR.Caes.Repository.DogRepository;
 import dev.java10x.CadastroDeCaesAR.Caes.Service.DogDTO;
-import dev.java10x.CadastroDeCaesAR.Caes.Service.DogModel;
 import dev.java10x.CadastroDeCaesAR.Caes.Service.DogService;
+import dev.java10x.CadastroDeCaesAR.Treinamentos.Repository.TreinamentoRepository;
+import dev.java10x.CadastroDeCaesAR.Treinamentos.Service.TreinamentoDTO;
+import dev.java10x.CadastroDeCaesAR.Treinamentos.Service.TreinamentoService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,9 +17,13 @@ import java.util.List;
 public class DogController {
 
     private DogService dogService;
+    private TreinamentoService treinamentoService;
+    private DogRepository dogRepository;
 
-    public DogController(DogService dogService) {
+    public DogController(DogService dogService, TreinamentoRepository treinamentoRepository, TreinamentoService treinamentoService) {
         this.dogService = dogService;
+        this.dogRepository = dogRepository;
+        this.treinamentoService = treinamentoService;
     }
 
     //boas vindas
@@ -28,14 +34,12 @@ public class DogController {
 
     //adicionar(CREATE)
     @PostMapping("/criar")
-    public ResponseEntity<String> criar(@RequestBody DogDTO dog){
-        DogDTO dogDTO = dogService.criar(dog);
+    public ResponseEntity<String> criar(@RequestBody DogDTO dogDTO){
+        DogDTO dog = dogService.criar(dogDTO);
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body("Cadastro criado com sucesso:\n"+"Nome:"+dogDTO.getNome()+"\n(ID):"+dogDTO.getId());
+                .body("Cadastro criado com sucesso:\n"+"Nome:"+dog.getNome()+"\n(ID):"+dog.getId());
 
     }
-
-    //procurar(CREATE)
 
     //mostrar todos(READ)
     @GetMapping("/listar")
@@ -82,6 +86,24 @@ public class DogController {
                     .body("Cadastro (ID): "+id+" ,nao encontrado.");
         }
     }
+
+    //Concluir treino
+    @PatchMapping("/concluirtreino/{id}")
+    public ResponseEntity<DogDTO> concluirTreino(@PathVariable Long id,@RequestBody DogDTO dog){
+        TreinamentoDTO treinamentoDTO = treinamentoService.mostrarPorID(id);
+        DogDTO dogDTO = dogService.mostrarPorID(dog.getId());
+        if (treinamentoDTO != null && dogDTO != null){
+            dogDTO.setPontos(dogDTO.getPontos()+5);
+            treinamentoDTO.setConcluido(true);
+            dogService.alterarDados(dogDTO.getId(),dogDTO);
+            treinamentoService.alterarTreino(id,treinamentoDTO);
+            return ResponseEntity.ok(dogDTO);
+        }else
+            return ResponseEntity.notFound()
+                    .build();
+    }
+
+
 
 
 

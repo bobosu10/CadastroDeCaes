@@ -13,6 +13,7 @@ public class TreinamentoMapper {
         treinamentoModel.setDog(treinamentoDTO.getDog());
         treinamentoModel.setDificuldade(treinamentoDTO.getDificuldade());
         treinamentoModel.setDicas(treinamentoDTO.getDicas());
+        treinamentoModel.setConcluido(treinamentoDTO.isConcluido());
 
         return treinamentoModel;
     }
@@ -25,6 +26,7 @@ public class TreinamentoMapper {
         treinamentoDTO.setDog(treinamentoModel.getDog());
         treinamentoDTO.setDificuldade(treinamentoModel.getDificuldade());
         treinamentoDTO.setDicas(treinamentoModel.getDicas());
+        treinamentoDTO.setConcluido(treinamentoModel.isConcluido());
 
         return treinamentoDTO;
     }

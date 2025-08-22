@@ -39,6 +39,9 @@ public class DogModel {
     @Column(name = "taxi_dog")
     private boolean taxiDog;
 
+    @Column(name = "pontos")
+    private int pontos;
+
     @ManyToOne
     @JoinColumn(name = "treinamentos_id") //chave estrangeira foreing key
     private TreinamentoModel treinamentos;

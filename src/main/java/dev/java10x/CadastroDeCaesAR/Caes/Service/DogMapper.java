@@ -16,6 +16,7 @@ public class DogMapper {
         dogModel.setImgUrl(dogDTO.getImgUrl());
         dogModel.setTreinamentos(dogDTO.getTreinamentos());
         dogModel.setNome(dogDTO.getNome());
+        dogModel.setPontos(dogDTO.getPontos());
 
         return dogModel;
     }
@@ -31,6 +32,7 @@ public class DogMapper {
         dogDTO.setImgUrl(dogModel.getImgUrl());
         dogDTO.setTreinamentos(dogModel.getTreinamentos());
         dogDTO.setNome(dogModel.getNome());
+        dogDTO.setPontos(dogModel.getPontos());
 
         return dogDTO;
     }

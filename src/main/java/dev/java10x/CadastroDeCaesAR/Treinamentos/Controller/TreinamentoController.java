@@ -1,8 +1,9 @@
 package dev.java10x.CadastroDeCaesAR.Treinamentos.Controller;
 
 import dev.java10x.CadastroDeCaesAR.Treinamentos.Service.TreinamentoDTO;
-import dev.java10x.CadastroDeCaesAR.Treinamentos.Service.TreinamentoModel;
 import dev.java10x.CadastroDeCaesAR.Treinamentos.Service.TreinamentoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,27 +21,52 @@ public class TreinamentoController {
     //CRUD
 
     @PostMapping("/criar")
-    public TreinamentoDTO criarTreino(@RequestBody TreinamentoDTO treinamentoDTO){
-        return treinamentoService.criarTreino(treinamentoDTO);
+    public ResponseEntity<String> criarTreino(@RequestBody TreinamentoDTO treinamentoDTO) {
+        TreinamentoDTO treino = treinamentoService.criarTreino(treinamentoDTO);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body("Missao cadastrada com sucesso.");
     }
 
     @GetMapping("/mostrarTodosOsTreinos")
-    public List<TreinamentoDTO> mostrarTreinos(){
-        return treinamentoService.mostrarTreinos();
+    public ResponseEntity<List<TreinamentoDTO>> mostrarTreinos() {
+        List<TreinamentoDTO> treinos = treinamentoService.mostrarTreinos();
+        return ResponseEntity.ok(treinos);
     }
 
     @GetMapping("/mostrarTodosOsTreinos/{id}")
-    public TreinamentoDTO mostrarPorID(@PathVariable Long id){
-        return treinamentoService.mostrarPorID(id);
+    public ResponseEntity<?> mostrarPorID(@PathVariable Long id) {
+
+        TreinamentoDTO treino = treinamentoService.mostrarPorID(id);
+
+        if (treino != null) {
+            return ResponseEntity.ok(treino);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Treino nao encontrado.");
+        }
     }
 
     @PutMapping("/alterar/{id}")
-    public TreinamentoDTO alterarDados(@PathVariable Long id, @RequestBody TreinamentoDTO treinamentoAtualizado){
-        return treinamentoService.alterarDados(id,treinamentoAtualizado);
+    public ResponseEntity<?> alterarDados(@PathVariable Long id, @RequestBody TreinamentoDTO treinamentoAtualizado) {
+        TreinamentoDTO treino = treinamentoService.alterarDados(id, treinamentoAtualizado);
+        if (treino != null) {
+            return ResponseEntity.ok(treino);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body("Treino com " + id + " nao encontrado.");
+        }
     }
 
+
     @DeleteMapping("/deletar/{id}")
-    public void deletarTreino(@PathVariable Long id){
-        treinamentoService.deletarTreino(id);
+    public ResponseEntity<String> deletarTreino(@PathVariable Long id) {
+        if (treinamentoService.mostrarPorID(id) != null){
+            treinamentoService.deletarTreino(id);
+            return ResponseEntity.ok("Treino deletado com sucesso");
+        }else {
+            return ResponseEntity.status( HttpStatus.NOT_FOUND)
+                    .body("Cadastro de treino nao encontrado.");
+        }
     }
 }
+

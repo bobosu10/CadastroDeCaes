@@ -28,4 +28,6 @@ public class DogDTO {
 
     private TreinamentoModel treinamentos;
 
+    private int pontos;
+
 }
