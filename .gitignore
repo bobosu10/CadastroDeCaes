@@ -33,4 +33,7 @@ build/
 .vscode/
 data/
 
+#variavel de ambiente
 .env
+
+docker-compose.yml
